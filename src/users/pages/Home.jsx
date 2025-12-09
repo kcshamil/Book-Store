@@ -1,24 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FaSearch } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { ToastContainer,toast } from 'react-toastify';
+
+
 
 
 function Home() {
-  return (
-    <>
-    <Header/>
+  const navigate = useNavigate()
+
+  const [searchKey, setSearchKey] = useState("")
+
+  const handleSearch = ()=>{
+    if (!searchKey) {
+      toast.warning("Please provide A Book title here!!!")
+    } else if (!sessionStorage.getItem("token")) {
+      toast.warning("Please Login to Search Book!!")
+      setTimeout(() => {
+        navigate('/login')
+      }, 2500);
+    }else if(sessionStorage.getItem("token") && searchKey){
+  navigate('/books')
+  }else{
+    toast.error("Something went wrong!!!")
+  }
+}
+
+return (
+  <>
+    <Header />
     <div>
       {/* landing part - search */}
       <div className="flex justify-center items-center flex-col bg-[url(banner.jpg)] bg-cover bg-center text-white">
-        <div style={{height:'500px',backgroundColor:'rgba(0,0,0,0.4)'}} className='w-full flex justify-center items-center flex-col'>
+        <div style={{ height: '500px', backgroundColor: 'rgba(0,0,0,0.4)' }} className='w-full flex justify-center items-center flex-col'>
           <h1 className='text-5xl font-bold mb-2'>Wondrful Gifts</h1>
           <p>Gift your family and friends a book</p>
           {/* search */}
           <div className="mt-9 flex">
-            <input type="text" className='bg-white rounded-3xl text-black w-100 placeholder-gray-500 p-2' placeholder='Search Books Here'/>
-            <button><FaSearch className='text-gray-500' style={{marginLeft:'-40px'}}/></button>
+            <input type="text" className='bg-white rounded-3xl text-black w-100 placeholder-gray-500 p-2' placeholder='Search Books Here' />
+            <button onClick={handleSearch}><FaSearch className='text-gray-500' style={{ marginLeft: '-40px' }} /></button>
           </div>
         </div>
       </div>
@@ -37,7 +59,7 @@ function Home() {
               <h4>$ price</h4>
             </div>
           </div>
-           {/* duplicate book card div */}
+          {/* duplicate book card div */}
           <div className='shadow rounded p-3 mx-4'>
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBRTiJIVrtNKzhImdDm-wWXoepi-2KWurOig&s" alt="book" />
             <div className="flex justify-center items-center flex-col mt-4">
@@ -46,7 +68,7 @@ function Home() {
               <h4>$ price</h4>
             </div>
           </div>
-           {/* duplicate book card div */}
+          {/* duplicate book card div */}
           <div className='shadow rounded p-3 mx-4'>
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBRTiJIVrtNKzhImdDm-wWXoepi-2KWurOig&s" alt="book" />
             <div className="flex justify-center items-center flex-col mt-4">
@@ -55,7 +77,7 @@ function Home() {
               <h4>$ price</h4>
             </div>
           </div>
-           {/* duplicate book card div */}
+          {/* duplicate book card div */}
           <div className='shadow rounded p-3 mx-4'>
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBRTiJIVrtNKzhImdDm-wWXoepi-2KWurOig&s" alt="book" />
             <div className="flex justify-center items-center flex-col mt-4">
@@ -99,20 +121,20 @@ function Home() {
         <h2 className="text-2xl">See What Others Are Saying</h2>
         <div className="my-10 flex justify-center items-center flex-col">
           {/* user image */}
-          <img width={'200px'} height={'200px'} style={{borderRadius:'50%'}} src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/E12KS1G65-W0168RE00G7-133faf432639-512.jpeg" alt="user" />
+          <img width={'200px'} height={'200px'} style={{ borderRadius: '50%' }} src="https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/E12KS1G65-W0168RE00G7-133faf432639-512.jpeg" alt="user" />
           {/* feedback */}
           <p className='mt-5'>Lucas Alexander</p>
           <p className='text-justify mt-4'><span className='font-bold me-2'>"Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque eligendi, enim quos, nam animi repudiandae temporibus ex optio ipsam laudantium quaerat fuga odit quae a inventore quibusdam quod necessitatibus dolore!
-          Fuga, accusamus laborum vero ad earum dolorem voluptatibus repudiandae officia. Doloribus velit sunt deleniti facilis asperiores odio accusamus nostrum recusandae dolorem? Sequi odit nostrum praesentium accusamus voluptates molestiae, ipsa inventore?
-          Id praesentium earum suscipit, tempora beatae molestias fugiat in omnis nostrum porro. Mollitia eligendi nostrum corrupti delectus voluptatum, animi amet modi eum laboriosam voluptates tempora expedita nulla fugit pariatur libero."</span></p>
+            Fuga, accusamus laborum vero ad earum dolorem voluptatibus repudiandae officia. Doloribus velit sunt deleniti facilis asperiores odio accusamus nostrum recusandae dolorem? Sequi odit nostrum praesentium accusamus voluptates molestiae, ipsa inventore?
+            Id praesentium earum suscipit, tempora beatae molestias fugiat in omnis nostrum porro. Mollitia eligendi nostrum corrupti delectus voluptatum, animi amet modi eum laboriosam voluptates tempora expedita nulla fugit pariatur libero."</span></p>
         </div>
-        </section>
-      
-      
+      </section>
+
+
     </div>
-    <Footer/>
-    </>
-  )
+    <Footer />
+  </>
+)
 }
 
 export default Home

@@ -1,28 +1,92 @@
 import React, { useState } from 'react'
 import { FaUser, FaEye, FaEyeSlash } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
+import { loginAPI, registerAPI } from '../services/allAPI';
+
+
+
 
 
 function Auth({ insideRegister }) {
-  const [viewPassword, setViewPassword] = useState(false)
 
+  const navigate = useNavigate() 
+  const [viewPassword, setViewPassword] = useState(false)
   const [userDetails,setUserDetails] = useState({
   username:"",
   email:"",
   password:""
 })
-console.log(userDetails);
-const handleRegister =(e)=>{
+// console.log(userDetails);
+
+const handleRegister = async (e)=>{
   e.preventDefault()
   const {username , email , password} = userDetails
   if(email && username && password ){
-    toast.success("Registration completeed")
+    // toast.success("API Call")
+    try{
+      const result = await registerAPI(userDetails)
+      console.log(result);
+      if(result.status==200){
+        toast.success(`Register successfully... Please Login to Bookstore!!!!`)
+        setUserDetails({username:"",email:"",password:""})
+        navigate('/login')
+      }
+      else if(result.status==409){
+        toast.warning(result.response.data)
+        setUserDetails({username:"",email:"",password:""})
+        navigate('/login')
+      }else{
+        console.log(result);
+        toast.error("Somthing went wrong")
+        setUserDetails({username:"",email:"",password:""}) 
+      }
+    }catch(err){
+      console.log(err);
+      
+    }
 
   }else{
-    toast.info("please fill the form")
+    toast.info("Please fill the form completely")
   }
 }
+
+const handleLogin = async (e)=>{
+  e.preventDefault()
+  const {email,password} = userDetails
+  if(email && password ){
+    // toast.success("API Call")
+    try{
+      // api call
+      const result = await loginAPI(userDetails)
+      console.log(result);
+      if(result.status==200){
+        toast.success("Login Successfull!!!")
+        sessionStorage.setItem("token",result.data.token)
+         sessionStorage.setItem("user",JSON.stringify(result.data.user))
+         setTimeout(()=>{
+          if(result.data.user.role=="admin"){
+            navigate('/admin/home')
+          }else{
+            navigate('/')
+          }
+         },2500)
+      }else if(result.status==401 || result.status==404){
+        toast.warning(result.response.data)
+        setUserDetails({username:"",email:"",password:""})
+      }else{
+        toast.error("Something went wrong!!!")
+        setUserDetails({username:"",email:"",password:""})
+      }
+    }catch(err){
+      console.log(err);
+    }
+  }else{
+    toast.info("Please fill the form completely!!!")
+  }
+}
+
+
   return (
     <div className='w-full min-h-screen flex justify-center items-center flex-col bg-[url(/banner.jpg)] bg-cover bg-center'>
       <div className="p-10">
@@ -56,21 +120,21 @@ const handleRegister =(e)=>{
             }
           </div>
           {/* forgot password */}
-          {
-            !insideRegister &&
+          
+            
             <div className="flex justify-between mb-5">
               <p className="text-xs text-orange-300">*Never share your password with others
               </p>
-              <button className='text-xs underline'>Forgot Password</button>
+              {!insideRegister &&<button className='text-xs underline'>Forgot Password</button>}
             </div>
-          }
+          
           {/* login/register btn */}
           <div className="text-center">
             {
               insideRegister ?
                 <button onClick={handleRegister} type='button' className='bg-green-700 p-2 w-full rounded'>Register</button>
                 :
-                <button type='button' className='bg-green-700 p-2 w-full rounded'>Login</button>
+                <button onClick={handleLogin} type='button' className='bg-green-700 p-2 w-full rounded'>Login</button>
             }
           </div>
           {/* google authentication */}
@@ -78,9 +142,9 @@ const handleRegister =(e)=>{
             <div className="my-5 text-center">
               {
                 insideRegister ?
-                  <p className="text-blue-600">Already a user ?  <Link to={'/login'}>Login</Link></p>
+                  <p className="text-blue-600">Already a user ?  <Link to={'/login'} className='underline ms-5'>Login</Link></p>
                   :
-                  <p className="text-blue-600">Already a New user ?  <Link to={'/register'}>Register</Link></p>
+                  <p className="text-blue-600">Already a New user ?  <Link to={'/register'} className='underline ms-5' >Register</Link></p>
 
               }
             </div>
@@ -90,7 +154,7 @@ const handleRegister =(e)=>{
       </div>
       <ToastContainer
 position="top-right"
-autoClose={5000}
+autoClose={2000}
 theme="colored"
 />
 
