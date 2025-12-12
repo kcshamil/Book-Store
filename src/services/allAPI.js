@@ -12,5 +12,10 @@ export const registerAPI = async (userDetails)=>{
 
 export const loginAPI = async (userDetails)=>{
     return await commonAPI("POST",`${serverURL}/login`,userDetails)
+}
 
+//google/sign-in google login API: called by Auth component when login using google btn clicked
+
+export const googleLoginAPI = async (userDetails)=>{
+    return await commonAPI("POST",`${serverURL}/google/sign-in`,userDetails)
 }
