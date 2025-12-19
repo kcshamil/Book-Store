@@ -36,9 +36,9 @@ function Books() {
     if (result.status == 200) {
       setAllBooks(result.data)
       setTempAllBooks(result.data)
-      const tempAllCategory = result.data?.map(item.category)
+       const tempAllCategory = result.data?.map(item=>item.category)
       const tempCategorySet = new Set(tempAllCategory)
-      console.log([...tempCategorySet]);
+      // console.log([...tempCategorySet]);
       setAllCategory([...tempCategorySet])
 
     } else {
@@ -93,7 +93,7 @@ function Books() {
                   {
                     allCategory?.map((category, index) => (
                       <div key={index} className="mt-3">
-                        <input type="radio" name='filter' id={category} />
+                        <input onClick={()=>filterBooks(category)} type="radio" name='filter' id={category} />
                         <label htmlFor={category} className='ms-3'>{category}</label>
                       </div>
                     ))
