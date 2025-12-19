@@ -10,10 +10,12 @@ import { searchContext } from '../../contextAPI/ShareContext'
 
 function Books() {
 
-  const {searchKey,setSearchKey} = useContext(searchContext)
+  const { searchKey, setSearchKey } = useContext(searchContext)
   const [showCategoryList, setShowCategoryList] = useState(false)
-  const [token,setToken] = useState("")
-  const [allBooks,setAllBooks] = useState([])
+  const [token, setToken] = useState("")
+  const [allBooks, setAllBooks] = useState([])
+  const [allCategory, setAllCategory] = useState([])
+  const [tempAllBooks, setTempAllBooks] = useState([])
 
   console.log(allBooks);
 
@@ -28,14 +30,28 @@ function Books() {
 
   const getAllBooks = async (token) => {
     const reqHeader = {
-      "Authorization":`Bearer ${token}`
+      "Authorization": `Bearer ${token}`
     }
-    const result = await getAllBooksPageAPI(reqHeader,searchKey)
-    if (result.status==200) {
+    const result = await getAllBooksPageAPI(reqHeader, searchKey)
+    if (result.status == 200) {
       setAllBooks(result.data)
+      setTempAllBooks(result.data)
+      const tempAllCategory = result.data?.map(item.category)
+      const tempCategorySet = new Set(tempAllCategory)
+      console.log([...tempCategorySet]);
+      setAllCategory([...tempCategorySet])
+
     } else {
       console.log(result);
 
+    }
+  }
+
+  const filterBooks = (category) => {
+    if (category == "all") {
+      setAllBooks(tempAllBooks)
+    } else {
+      setAllBooks(tempAllBooks?.filter(item => item.category == category))
     }
   }
 
@@ -53,7 +69,7 @@ function Books() {
               <div className="text-3xl font-bold my-5">All Books</div>
               {/* search box */}
               <div className="flex my-5">
-                <input value={searchKey} onChange={e=>setSearchKey(e.target.value)} type="text" className='border p-2 border-gray-400 w-100' placeholder='Search By Title' />
+                <input value={searchKey} onChange={e => setSearchKey(e.target.value)} type="text" className='border p-2 border-gray-400 w-100' placeholder='Search By Title' />
                 <button className='bg-black p-2 text-white'>Search</button>
               </div>
             </div>
@@ -70,14 +86,18 @@ function Books() {
                 <div className={showCategoryList ? "block" : "md:block hidden"}>
                   {/* category - 1 */}
                   <div className="mt-3">
-                    <input type="radio" name='filter' id='all' />
+                    <input onClick={()=>filterBooks('all')} type="radio" name='filter' id='all' />
                     <label htmlFor="all" className='ms-3'>All</label>
                   </div>
                   {/* book category */}
-                  <div className="mt-3">
-                    <input type="radio" name='filter' id='demo' />
-                    <label htmlFor="demo" className='ms-3'>Category name</label>
-                  </div>
+                  {
+                    allCategory?.map((category, index) => (
+                      <div key={index} className="mt-3">
+                        <input type="radio" name='filter' id={category} />
+                        <label htmlFor={category} className='ms-3'>{category}</label>
+                      </div>
+                    ))
+                  }
                 </div>
               </div>
               {/* book row */}
@@ -85,13 +105,13 @@ function Books() {
                 <div className="md:grid grid-cols-4 mt-5 md:mt-0">
                   {/* book card div 1 */}
                   {
-                    allBooks?.length>0 ?
-                      allBooks?.map(book=>(
+                    allBooks?.length > 0 ?
+                      allBooks?.map(book => (
                         <div key={book?._id} className="shadow rounded p-3 mx-4 mb-5 md:mb-0">
                           <img width={'300px'} height={'300px'} src={book?.imageURL} alt="book" />
                           <div className="flex justify-center items-center flex-col mt-4">
                             <h3 className='text-blue-600 font-bold text-lg'>{book?.author}</h3>
-                            <h4 className='text-lg'>{book?.title.slice(0,9)}...</h4>
+                            <h4 className='text-lg'>{book?.title.slice(0, 9)}...</h4>
                             <Link to={`/books/${book?._id}/view`} className='bg-black py-2 px-5 mt-2 text-white'>View</Link>
                           </div>
                         </div>
