@@ -137,12 +137,12 @@ function Auth({ insideRegister }) {
                 viewPassword ?
                   <FaEyeSlash onClick={() => setViewPassword(!viewPassword)} className='text-gray-400 cursor-pointer' style={{
                     marginLeft: '-30px',
-                    marginTop: '-20px'
+                    
                   }} />
                   :
                   <FaEye onClick={() => setViewPassword(!viewPassword)} className='text-gray-400 cursor-pointer' style={{
                     marginLeft: '-30px',
-                    marginTop: '-20px'
+                    
                   }} />
               }
             </div>

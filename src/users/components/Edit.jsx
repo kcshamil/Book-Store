@@ -28,7 +28,7 @@ const [offCanvas,setOffCanvas] = useState(false)
                   {/* image */}
                   <label htmlFor="uploadimg">
                   <input type="file" id='uploadimg' hidden />
-                  <img width={'200px'} style={{borderRadius:"50%"}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReGNqJq-DTdqDhAVxKgTe6i2YVK8w3GLvR1Q&s" alt="" />
+                  <img width={'100px'} style={{borderRadius:"50%"}} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReGNqJq-DTdqDhAVxKgTe6i2YVK8w3GLvR1Q&s" alt="" />
                   </label>
                   <button style={{marginTop:'-20px',borderRadius:'50%'}}  className='bg-yellow-300 p-3 text-white rounded ms-20'><FaPen/></button>
                   {/* name */}
@@ -39,9 +39,12 @@ const [offCanvas,setOffCanvas] = useState(false)
                   <div className="mt-5 w-full px-5">
                     <input type="text" placeholder='New password' className='border border-gray-400 p-2 rounded w-full'/>
                   </div>
+                  <div className="mt-5 w-full px-5">
+                    <input type="text" placeholder='Confirm password' className='border border-gray-400 p-2 rounded w-full'/>
+                  </div>
                   {/* bio */}
                   <div className="mt-5 w-full px-5">
-                    <input type="text" placeholder='Bio' className='border border-gray-400 p-2 rounded w-full'/>
+                    <textarea type="text" placeholder='Bio' rows={2} className='border border-gray-400 p-2 rounded w-full'/>
                   </div>
                   {/* button */}
                   <div className="mb-3 flex justify-end mt-5">

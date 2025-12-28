@@ -54,7 +54,7 @@ function Home() {
         {/* landing part - search */}
         <div className="flex justify-center items-center flex-col bg-[url(banner.jpg)] bg-cover bg-center text-white">
           <div style={{ height: '500px', backgroundColor: 'rgba(0,0,0,0.4)' }} className='w-full flex justify-center items-center flex-col'>
-            <h1 className='text-5xl font-bold mb-2'>Wondrful Gifts</h1>
+            <h1 className='text-5xl font-bold mb-2'>Wonderful Gifts</h1>
             <p>Gift your family and friends a book</p>
             {/* search */}
             <div className="mt-9 flex">
