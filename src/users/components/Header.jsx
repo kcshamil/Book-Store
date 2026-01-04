@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { FaAddressCard, FaBars, FaFacebook, FaInstagram, FaPowerOff, FaTwitter, FaUser } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
+import serverURL from '../../services/serverURL'
+
 
 
 
@@ -66,7 +68,7 @@ function Header() {
               :
               <div className="relative inline-block text-left ms-2">
                 <button onClick={() => setDropDown(!dropDown)} className='w-full bg-white px-3 py-2 shadow hover:bg-gray-50'>
-                  <img width={'40px'} height={'40px'} style={{ borderRadius: '50%' }} src={dp ? dp : "https://st3.depositphotos.com/15648834/17930/v/450/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"} alt="profile picture" />
+                  <img width={'40px'} height={'40px'} style={{ borderRadius: '50%' }} src={dp?dp.startsWith("https://lh3.googleusercontent.com/")?dp:`${serverURL}/uploads/${dp}`:"https://st3.depositphotos.com/15648834/17930/v/450/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"} alt="profile picture" />
                 </button>
                 {
                   dropDown &&

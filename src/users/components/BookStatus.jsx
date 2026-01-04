@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getAllUserBooksAPI } from '../../services/allAPI'; // ✅ correct import
-
+import { getAllUserBooksAPI, removeBookAPI } from '../../services/allAPI'; 
 
 
 function BookStatus() {
@@ -27,6 +26,23 @@ function BookStatus() {
             }
         }
     }
+
+     const deleteBook = async (id) => {
+        const token = sessionStorage.getItem("token")
+        if (token) {
+            const reqHeader = {
+                "Authorization": `Bearer ${token}`
+            }
+            const result = await removeBookAPI(id,reqHeader)
+            if (result.status == 200) {
+                getUserUploadBooks()
+            } else {
+                console.log(result);
+
+            }
+        }
+    }
+     
 
     return (
         <>
@@ -62,7 +78,7 @@ function BookStatus() {
                                     </div>
                                     <div className="px-4 mt-4 md:mt-0">
                                         <img className='w-100' src={book?.imageURL} alt="" />
-                                        <div className='flex justify-end'><button className='p-2 bg-red-500 text-white  mt-5'>DELETE</button></div>
+                                        <div className='flex justify-end'><button onClick={()=>deleteBook(book?._id)} className='p-2 bg-red-500 text-white  mt-5'>DELETE</button></div>
                                     </div>
                                 </div>
                             </div>
