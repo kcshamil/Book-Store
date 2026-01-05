@@ -12,6 +12,10 @@ import Auth from './pages/Auth'
 import Pnf from './pages/Pnf'
 import { useState } from 'react'
 import Preloader from './components/Preloader'
+import PaymentSuccess from './users/pages/PaymentSuccess'
+import PaymentError from './users/pages/PaymentError'
+
+
 
 function App() {
 
@@ -32,6 +36,8 @@ function App() {
 
         <Route path='/user/profile' element={<Profile />} />
         <Route path='/books/:id/view' element={<View />} />
+        <Route path='/user/payment-success' element={<PaymentSuccess />} />
+        <Route path='/user/payment-error' element={<PaymentError />} />
 
         <Route path='/admin/home' element={<AdminHome />} />
         <Route path='/admin/profile' element={<AdminProfile />} />
